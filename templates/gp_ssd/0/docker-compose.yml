@@ -1,0 +1,54 @@
+version: '2'
+services:
+  gpmaster:
+     image: 10.0.0.96:5000/database/centos_greenplum:v2
+     hostname: master
+     labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.scheduler.affinity:host_label: key1=102
+     networks:
+       - docker_gwbridge
+     ports:
+       - "20020:2345"
+       - "20021:28080"
+     volumes:
+       - /var/local/osd1/gpmaster/gpdata:/home/gpadmin/gpdata
+       - /var/local/osd1/gpmaster/conf:/home/gpadmin/conf
+     privileged: true
+     tty: true
+  gpnode1:
+     image: 10.0.0.96:5000/database/centos_greenplum:v2
+     hostname: sdw1
+     labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.scheduler.affinity:host_label: key1=104
+     networks:
+       - docker_gwbridge
+     ports:
+       - "20022:40000"
+       - "20023:40001"
+       - "20024:40002"
+       - "20025:28080"
+     volumes:
+       - /var/local/osd2/gpnode1/gpdata:/home/gpadmin/gpdata
+     privileged: true
+     tty: true
+  gpnode2:
+     image: 10.0.0.96:5000/database/centos_greenplum:v2
+     hostname: sdw2
+     labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.scheduler.affinity:host_label: key1=106
+     networks:
+       - docker_gwbridge
+     ports:
+       - "20026:40000"
+       - "20027:40001"
+       - "20028:40002"
+       - "20029:28080"
+     volumes:
+       - /var/local/osd4/gpnode2/gpdata:/home/gpadmin/gpdata
+     privileged: true
+     tty: true
+
+
